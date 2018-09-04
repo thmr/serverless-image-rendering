@@ -172,7 +172,7 @@ $ npm run test:watch
 1. Install serverless globally (optional)
 1. Make sure you have correctly set up your AWS credentials
 1. Run `Make package`
-1. run `npm run deploy`
+1. Run `npm run deploy`
 
 ### Docker
 
