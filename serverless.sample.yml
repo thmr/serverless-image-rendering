@@ -4,7 +4,7 @@ custom:
   envName: '${self:provider.stage}'
   apigwBinary:
     types:
-    - '*/*'
+      - '*/*'
 
 provider:
   name: aws
@@ -17,29 +17,29 @@ provider:
   environment:
     ENV_NAME: ${self:custom.envName}
     APP_NAME: serverless-image-rendering
-    BUCKET: YOUR_S3_BUCKET
+    BUCKET: YOUR_BUCKET
 
 plugins:
-- serverless-apigw-binary
-- serverless-apigwy-binary
+  - serverless-apigw-binary
+  - serverless-apigwy-binary
 
 functions:
 
   resizeImage:
     handler: handler.resizeImage
     events:
-    - http:
-        path: resize-image
-        method: get
-        contentHandling: CONVERT_TO_BINARY
+      - http:
+          path: resize-image
+          method: get
+          contentHandling: CONVERT_TO_BINARY
 
   roundImage:
     handler: handler.roundImage
     events:
-    - http:
-        path: round-image
-        method: get
-        contentHandling: CONVERT_TO_BINARY
+      - http:
+          path: round-image
+          method: get
+          contentHandling: CONVERT_TO_BINARY
 
 resources:
   Resources:
@@ -50,25 +50,25 @@ resources:
         AssumeRolePolicyDocument:
           Version: "2012-10-17"
           Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-              - lambda.amazonaws.com
-            Action: sts:AssumeRole
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
         Policies:
-        - PolicyName: ${self:service}-s3-and-log-access
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-            - Effect: Allow
-              Action:
-              - logs:CreateLogGroup
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-              Resource:
-              - 'arn:aws:logs:${self:provider.region}:*:log-group:/aws/lambda/*:*:*'
-            - Effect: Allow
-              Action:
-              - "s3:GetObject"
-              Resource:
-              - 'arn:aws:s3:::${self:provider.environment.BUCKET}/*'
+          - PolicyName: ${self:service}-s3-and-log-access
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'arn:aws:logs:${self:provider.region}:*:log-group:/aws/lambda/*:*:*'
+                - Effect: Allow
+                  Action:
+                    - "s3:GetObject"
+                  Resource:
+                    - 'arn:aws:s3:::${self:provider.environment.BUCKET}/*'
